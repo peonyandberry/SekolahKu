@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parents Portal — SK Taman Melati</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f7f6;
+    --card:#ffffff;
+    --ink:#1d262b;
+    --ink-soft:#5b6b70;
+    --line:#e3e9e7;
+    --accent:#275e50;
+    --accent-deep:#1c463b;
+    --accent-soft:#e7f0ec;
+    --accent-line:#c3dcd2;
+    --gold:#9a7b2d;
+    --gold-soft:#f7efd9;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Source Sans 3","Segoe UI",system-ui,Arial,sans-serif;
+    line-height:1.6;
+    padding-bottom:60px;
+  }
+  /* ===== Masthead with professional pattern ===== */
+  .masthead{
+    background:
+      repeating-linear-gradient(45deg, rgba(255,255,255,.05) 0 2px, transparent 2px 14px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,.04) 0 2px, transparent 2px 14px),
+      linear-gradient(160deg, var(--accent-deep), var(--accent));
+    color:#fff;
+    border-bottom:4px solid var(--gold);
+  }
+  .mast-inner{max-width:960px;margin:0 auto;padding:30px 20px 0;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+  .brand{display:flex;gap:16px;align-items:center}
+  .crest{flex:none;width:64px;height:64px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+  .brand h1{font-size:24px;font-weight:700;letter-spacing:.2px;line-height:1.2}
+  .brand .tagline{font-size:13.5px;opacity:.85;letter-spacing:.4px}
+  .mast-tools{display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+  .lang-switch{display:flex;border-radius:9px;overflow:hidden;border:1px solid rgba(255,255,255,.35)}
+  .lang-switch button{
+    background:transparent;color:#fff;border:none;font:inherit;font-size:13px;font-weight:600;
+    padding:6px 14px;cursor:pointer;
+  }
+  .lang-switch button.active{background:var(--gold);color:#fff}
+  .login-bar{
+    max-width:960px;margin:0 auto;width:100%;padding:16px 20px 22px;
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  }
+  .login-label{font-size:13.5px;opacity:.9}
+  .parent-chip{
+    border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);color:#fff;
+    border-radius:999px;padding:7px 16px;font:inherit;font-size:13.5px;cursor:pointer;
+  }
+  .parent-chip:hover{background:rgba(255,255,255,.2)}
+  .parent-chip.active{background:#fff;color:var(--accent-deep);font-weight:700;border-color:#fff}
+  .login-note{font-size:12px;opacity:.7}
+
+  /* ===== Nav tabs ===== */
+  nav.tabs{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+  .tabs-inner{max-width:960px;margin:0 auto;padding:0 20px;display:flex;gap:4px;overflow-x:auto}
+  .tab-btn{
+    border:none;background:none;font:inherit;font-size:14.5px;font-weight:600;color:var(--ink-soft);
+    padding:14px 18px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;
+  }
+  .tab-btn:hover{color:var(--accent)}
+  .tab-btn.active{color:var(--accent);border-bottom-color:var(--gold)}
+
+  main{max-width:960px;margin:28px auto 0;padding:0 20px}
+  section.page{display:none}
+  section.page.show{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .sec-head h2{font-size:21px;font-weight:700}
+  .sec-desc{color:var(--ink-soft);font-size:14.5px;margin-bottom:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius)}
+  .sample-band{
+    display:inline-block;padding:4px 14px;border-radius:999px;margin-bottom:18px;
+    background:var(--gold-soft);color:var(--gold);font-size:12.5px;font-weight:600;
+  }
+
+  /* ===== Announcements ===== */
+  .announce{overflow:hidden}
+  .ann-item{border-bottom:1px solid var(--line)}
+  .ann-item:last-child{border-bottom:none}
+  .ann-toggle{
+    width:100%;background:none;border:none;cursor:pointer;text-align:left;
+    padding:16px 20px;display:flex;gap:14px;align-items:flex-start;font:inherit;color:inherit;
+  }
+  .ann-toggle:hover{background:#fafcfb}
+  .ann-date{flex:none;width:64px;text-align:center;padding:6px 0;border-radius:10px;background:var(--accent-soft);color:var(--accent)}
+  .ann-date .d{font-size:18px;font-weight:700;line-height:1.1;display:block}
+  .ann-date .m{font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  .ann-body{flex:1;min-width:0}
+  .ann-title{font-weight:700;font-size:15.5px}
+  .ann-note{color:var(--ink-soft);font-size:14px}
+  .ann-chevron{flex:none;color:var(--ink-soft);transition:transform .2s ease;margin-top:2px;font-size:13px}
+  .ann-item.open .ann-chevron{transform:rotate(90deg)}
+  .ann-detail{display:none;padding:0 20px 18px 98px;color:var(--ink-soft);font-size:14px}
+  .ann-item.open .ann-detail{display:block}
+
+  /* ===== Kalendar & Program ===== */
+  .kalendar-grid{display:grid;grid-template-columns:320px 1fr;gap:16px}
+  @media (max-width:760px){.kalendar-grid{grid-template-columns:1fr}}
+  .kal-card{padding:18px}
+  .kal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .kal-head h3{font-size:15px;font-weight:700}
+  .kal-nav{display:flex;gap:6px}
+  .kal-nav button{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer;color:var(--ink-soft);font-size:14px}
+  .kal-nav button:hover{border-color:var(--accent-line);color:var(--accent)}
+  .kal-table{width:100%;border-collapse:collapse;font-size:13px}
+  .kal-table th{color:var(--ink-soft);font-weight:600;padding:6px 0;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  .kal-table td{text-align:center;padding:3px 0}
+  .kal-day{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:9px;cursor:pointer;border:none;background:none;font:inherit;color:var(--ink)}
+  .kal-day:hover{background:var(--accent-soft)}
+  .kal-day.has-event{font-weight:700;color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent-line)}
+  .kal-day.selected{background:var(--accent);color:#fff;box-shadow:none}
+  .kal-day.dim{color:#c3cdca;cursor:default}
+  .kal-day.dim:hover{background:none}
+  .day-info{padding:18px;border-left:1px solid var(--line)}
+  @media (max-width:760px){.day-info{border-left:none;border-top:1px solid var(--line)}}
+  .day-info h3{font-size:15px;font-weight:700;margin-bottom:4px}
+  .day-info .hint{color:var(--ink-soft);font-size:13.5px;margin-bottom:12px}
+  .badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--gold-soft);color:var(--gold);margin-bottom:10px}
+  .prog-item{
+    width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px;margin-bottom:10px;cursor:pointer;font:inherit;color:inherit;
+    display:flex;justify-content:space-between;gap:14px;align-items:center;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .prog-item:hover{border-color:var(--accent-line);box-shadow:0 2px 8px rgba(39,94,80,.08)}
+  .prog-item.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+  .prog-name{font-weight:700;font-size:15px}
+  .prog-meta{color:var(--ink-soft);font-size:13.5px;margin-top:2px}
+  .prog-tag{flex:none;font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+  .prog-detail{margin-top:14px;padding:18px 20px;display:none}
+  .prog-detail.show{display:block}
+  .prog-detail h4{font-size:16px;font-weight:700;margin-bottom:10px;color:var(--accent)}
+  .dl{display:grid;grid-template-columns:130px 1fr;row-gap:8px;column-gap:12px;font-size:14px}
+  .dl dt{color:var(--ink-soft)}
+  .dl dd{color:var(--ink)}
+  .prog-nota{margin-top:14px;padding:12px 14px;background:var(--gold-soft);border-radius:10px;font-size:13.5px;color:var(--gold)}
+
+  /* ===== Keputusan (private) ===== */
+  .child-banner{padding:16px 20px;display:flex;gap:14px;align-items:center;margin-bottom:16px}
+  .child-avatar{
+    flex:none;width:46px;height:46px;border-radius:50%;background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;
+  }
+  .child-banner .nm{font-weight:700;font-size:16px}
+  .child-banner .cls{color:var(--ink-soft);font-size:13.5px}
+  .lock-card{padding:36px 20px;text-align:center;color:var(--ink-soft)}
+  .lock-card .icon{font-size:34px;margin-bottom:10px}
+  .result-controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 18px;font:inherit;font-size:14px;color:var(--ink);cursor:pointer}
+  .chip:hover{border-color:var(--accent-line)}
+  .chip.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+  /* Guru editor */
+  .teacher-banner{padding:14px 20px;display:flex;gap:14px;align-items:center;margin-bottom:16px}
+  .teacher-banner .nm{font-weight:700;font-size:15.5px}
+  .teacher-banner .cls{color:var(--ink-soft);font-size:13.5px}
+  .pupil-select{padding:10px 14px;border-radius:10px;border:1px solid var(--line);font:inherit;font-size:14.5px;color:var(--ink);background:#fff;cursor:pointer;margin-bottom:14px}
+  .pupil-select:focus{outline:2px solid var(--accent-line)}
+  .edit-field{margin-bottom:14px}
+  .edit-field label{display:block;font-weight:600;font-size:13.5px;margin-bottom:6px;color:var(--ink)}
+  .edit-field input[type=text],.edit-field textarea{
+    width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--line);
+    font:inherit;font-size:14px;color:var(--ink);background:#fff;resize:vertical;
+  }
+  .edit-field input:focus,.edit-field textarea:focus{outline:2px solid var(--accent-line);border-color:var(--accent-line)}
+  .edit-field .hint{color:var(--ink-soft);font-size:12.5px;margin-top:4px}
+  .saved-flash{
+    display:none;margin-top:14px;padding:11px 14px;border-radius:10px;
+    background:var(--accent-soft);color:var(--accent);font-size:13.5px;font-weight:600;
+  }
+  .saved-flash.show{display:block}
+  .result-panel{padding:18px 20px;display:none}
+  .result-panel.show{display:block}
+  .result-panel h4{font-size:16px;font-weight:700;margin-bottom:4px}
+  .result-panel .hint{color:var(--ink-soft);font-size:13.5px;margin-bottom:14px}
+  .mark-table{width:100%;border-collapse:collapse;font-size:14px}
+  .mark-table th{text-align:left;color:var(--ink-soft);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+  .mark-table td{padding:9px 10px;border-bottom:1px solid var(--line)}
+  .mark-table tr:last-child td{border-bottom:none}
+  .grade{display:inline-block;min-width:34px;text-align:center;padding:2px 8px;border-radius:8px;font-weight:700;font-size:13px;background:var(--accent-soft);color:var(--accent)}
+  .grade.warn{background:var(--gold-soft);color:var(--gold)}
+  .summary{margin-top:14px;padding:12px 14px;background:var(--accent-soft);border-radius:10px;font-size:13.5px;color:var(--accent)}
+  .privacy-note{font-size:12px;color:#9aa8a5;margin-top:10px}
+
+  /* ===== FAQ ===== */
+  .faq-item{overflow:hidden}
+  .faq-q{
+    width:100%;background:none;border:none;cursor:pointer;font:inherit;color:inherit;text-align:left;
+    padding:15px 20px;display:flex;justify-content:space-between;gap:14px;align-items:center;
+    font-weight:600;font-size:15px;
+  }
+  .faq-q:hover{background:#fafcfb}
+  .faq-a{display:none;padding:0 20px 16px;color:var(--ink-soft);font-size:14px}
+  .faq-item.open .faq-a{display:block}
+  .faq-item.open{background:#fbfdfc}
+
+  /* ===== Footer ===== */
+  footer{
+    max-width:960px;margin:48px auto 0;padding:26px 20px;border-top:1px solid var(--line);
+    display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:flex-start;
+  }
+  footer .school-info{color:var(--ink-soft);font-size:13.5px;line-height:1.8}
+  footer .school-info strong{color:var(--ink);font-size:14px}
+  footer .mini-note{font-size:12px;color:#a2afac;max-width:300px;text-align:right}
+  @media (max-width:640px){footer .mini-note{text-align:left}}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="mast-inner">
+    <div class="brand">
+      <svg class="crest" viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M32 2 58 10v22c0 16-11 26-26 30C17 58 6 48 6 32V10Z" fill="#fff"/>
+        <path d="M32 6 54 13v19c0 13-9 21.5-22 25-13-3.5-22-12-22-25V13Z" fill="#275e50"/>
+        <path d="M32 6 54 13v19c0 13-9 21.5-22 25Z" fill="#1c463b"/>
+        <g fill="#f7efd9">
+          <path d="M32 22c-3-2.2-7-2.6-11-1.4v18c4-1.2 8-.8 11 1.4Zm0 0c3-2.2 7-2.6 11-1.4v18c-4-1.2-8-.8-11 1.4Z"/>
+        </g>
+        <path d="M32 22v18" stroke="#9a7b2d" stroke-width="1.6"/>
+        <path d="M25 46l7 5 7-5" fill="none" stroke="#f7efd9" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <h1 id="schoolName">Sekolah Kebangsaan Taman Melati</h1>
+        <div class="tagline" id="schoolTagline">Parents Portal — Portal Rasmi Ibu Bapa</div>
+      </div>
+    </div>
+    <div class="mast-tools">
+      <div class="lang-switch" id="langSwitch">
+        <button data-lang="ms" class="active">BM</button>
+        <button data-lang="en">EN</button>
+      </div>
+    </div>
+  </div>
+  <div class="login-bar" id="loginBar">
+    <span class="login-label" data-i18n="loginLabel">Log masuk ibu bapa (demo):</span>
+    <span id="parentChips"></span>
+    <span class="login-note" data-i18n="loginNote">Demo sahaja — tiada kata laluan diperlukan</span>
+  </div>
+</div>
+
+<nav class="tabs">
+  <div class="tabs-inner" id="tabBar">
+    <button class="tab-btn active" data-tab="pengumuman" data-i18n="tabAnn">Pengumuman</button>
+    <button class="tab-btn" data-tab="kalendar" data-i18n="tabKal">Kalendar &amp; Program</button>
+    <button class="tab-btn" data-tab="keputusan" data-i18n="tabRes">Keputusan Anak</button>
+    <button class="tab-btn" data-tab="guru" data-i18n="tabGuru">Guru</button>
+    <button class="tab-btn" data-tab="faq" data-i18n="tabFaq">Soalan Lazim</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ===== PENGUMUMAN ===== -->
+  <section class="page show" id="page-pengumuman">
+    <span class="sample-band" data-i18n="sampleBand">Data contoh sahaja — bukan maklumat sebenar</span>
+    <div class="sec-head"><h2 data-i18n="annTitle">Pengumuman Sekolah</h2></div>
+    <p class="sec-desc" data-i18n="annDesc">Info penting yang perlu ibu bapa tahu. Klik pengumuman untuk buka atau tutup butiran penuh.</p>
+    <div class="card announce" id="annList"></div>
+  </section>
+
+  <!-- ===== KALENDAR ===== -->
+  <section class="page" id="page-kalendar">
+    <span class="sample-band" data-i18n="sampleBand">Data contoh sahaja — bukan maklumat sebenar</span>
+    <div class="sec-head"><h2 data-i18n="kalTitle">Kalendar &amp; Program Persekolahan</h2></div>
+    <p class="sec-desc" data-i18n="kalDesc">Pilih tarikh dalam kalendar atau klik program untuk melihat aktiviti, masa, dan pakaian yang perlu dipakai.</p>
+    <div class="card kalendar-grid">
+      <div class="kal-card">
+        <div class="kal-head">
+          <h3 id="kalMonthTitle">—</h3>
+          <div class="kal-nav">
+            <button id="kalPrev" aria-label="prev">‹</button>
+            <button id="kalNext" aria-label="next">›</button>
+          </div>
+        </div>
+        <table class="kal-table">
+          <thead><tr id="kalHeadRow"></tr></thead>
+          <tbody id="kalBody"></tbody>
+        </table>
+      </div>
+      <div class="day-info" id="dayInfo"></div>
+    </div>
+    <div style="margin-top:22px">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:12px" data-i18n="progListTitle">Senarai Program</h3>
+      <div id="progList"></div>
+    </div>
+    <div class="card prog-detail" id="progDetail"></div>
+  </section>
+
+  <!-- ===== KEPUTUSAN ===== -->
+  <section class="page" id="page-keputusan">
+    <span class="sample-band" data-i18n="sampleBand">Data contoh sahaja — bukan maklumat sebenar</span>
+    <div class="sec-head"><h2 data-i18n="resTitle">Keputusan Anak Anda</h2></div>
+    <p class="sec-desc" data-i18n="resDesc">Privasi terpelihara — hanya keputusan anak anda sendiri dipaparkan selepas log masuk.</p>
+    <div id="resContent"></div>
+  </section>
+
+  <!-- ===== GURU ===== -->
+  <section class="page" id="page-guru">
+    <span class="sample-band" data-i18n="sampleBand">Data contoh sahaja — bukan maklumat sebenar</span>
+    <div class="sec-head"><h2 data-i18n="guruTitle">Ruang Guru</h2></div>
+    <p class="sec-desc" data-i18n="guruDesc">Cikgu boleh log masuk di sini untuk mengedit catatan murid kelas cikgu. Catatan akan dipaparkan kepada ibu bapa murid tersebut.</p>
+    <div id="guruContent"></div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="page" id="page-faq">
+    <span class="sample-band" data-i18n="sampleBand">Data contoh sahaja — bukan maklumat sebenar</span>
+    <div class="sec-head"><h2 data-i18n="faqTitle">Soalan Lazim</h2></div>
+    <p class="sec-desc" data-i18n="faqDesc">Jawapan kepada soalan yang selalu ditanya. Klik soalan untuk membaca jawapan.</p>
+    <div class="card faq-item" id="faqList"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="school-info" id="schoolInfo"></div>
+  <div class="mini-note" id="footNote"></div>
+</footer>
+
+<script>
+/* ================= DATA ================= */
+const T = {
+  schoolName: {ms:"Sekolah Kebangsaan Taman Melati", en:"Taman Melati Primary School (SK Taman Melati)"},
+  tagline: {ms:"Parents Portal — Portal Rasmi Ibu Bapa", en:"Parents Portal — Official Parent Portal"},
+  loginLabel: {ms:"Log masuk ibu bapa (demo):", en:"Parent sign-in (demo):"},
+  loginNote: {ms:"Demo sahaja — tiada kata laluan diperlukan", en:"Demo only — no password required"},
+  sampleBand: {ms:"Data contoh sahaja — bukan maklumat sebenar", en:"Sample data only — not real information"},
+  tabAnn: {ms:"Pengumuman", en:"Announcements"},
+  tabKal: {ms:"Kalendar & Program", en:"Calendar & Programmes"},
+  tabRes: {ms:"Keputusan Anak", en:"My Child's Results"},
+  tabGuru: {ms:"Guru", en:"Teachers"},
+  tabFaq: {ms:"Soalan Lazim", en:"FAQ"},
+  annTitle: {ms:"Pengumuman Sekolah", en:"School Announcements"},
+  annDesc: {ms:"Info penting yang perlu ibu bapa tahu. Klik pengumuman untuk buka atau tutup butiran penuh.", en:"Important information for parents. Click an announcement to expand or collapse the details."},
+  kalTitle: {ms:"Kalendar & Program Persekolahan", en:"School Calendar & Programmes"},
+  kalDesc: {ms:"Pilih tarikh dalam kalendar atau klik program untuk melihat aktiviti, masa, dan pakaian yang perlu dipakai.", en:"Pick a date on the calendar or click a programme to see the activity, time, and the required attire."},
+  progListTitle: {ms:"Senarai Program", en:"Programme List"},
+  resTitle: {ms:"Keputusan Anak Anda", en:"Your Child's Results"},
+  resDesc: {ms:"Privasi terpelihara — hanya keputusan anak anda sendiri dipaparkan selepas log masuk.", en:"Privacy protected — only your own child's results are shown after signing in."},
+  faqTitle: {ms:"Soalan Lazim", en:"Frequently Asked Questions"},
+  faqDesc: {ms:"Jawapan kepada soalan yang selalu ditanya. Klik soalan untuk membaca jawapan.", en:"Answers to the questions parents ask most. Click a question to read the answer."},
+  notLoggedIn: {ms:"Sila log masuk sebagai ibu bapa di bahagian atas untuk melihat keputusan anak anda.", en:"Please sign in as a parent at the top of the page to view your child's results."},
+  childOf: {ms:"Anak kepada:", en:"Child of:"},
+  subjectsLabel: {ms:"Pilih subjek:", en:"Choose a subject:"},
+  avgLabel: {ms:"Purata subjek ini:", en:"Average for this subject:"},
+  privacyNoteMs: {ms:"Kehadiran murid lain tidak dipaparkan — setiap ibu bapa hanya melihat anak sendiri.", en:"Other pupils' results are never shown — each parent sees only their own child."},
+  noActivity: {ms:"Tiada aktiviti", en:"No activity"},
+  normalDay: {ms:"hari biasa persekolahan. Waktu sekolah 7:30 pagi – 1:20 petang, pakaian biasa.", en:"a normal school day. School hours 7:30 am – 1:20 pm, regular attire."},
+  activityOn: {ms:"Aktiviti pada", en:"Activities on"},
+  detailHint: {ms:"Klik butang program di bawah senarai untuk butiran penuh.", en:"Click the programme button below the list for full details."},
+  attire: {ms:"Pakaian", en:"Attire"},
+  seeFull: {ms:"Lihat butiran penuh ↓", en:"See full details ↓"},
+  purpose: {ms:"Tujuan", en:"Purpose"},
+  date: {ms:"Tarikh", en:"Date"},
+  time: {ms:"Masa", en:"Time"},
+  importantNote: {ms:"Nota penting", en:"Important note"},
+  annType: {ms:"Pengumuman", en:"Announcement"},
+  footerAddress: {ms:"Alamat:", en:"Address:"},
+  footerEmail: {ms:"Emel:", en:"Email:"},
+  footerPhone: {ms:"Telefon:", en:"Phone:"},
+  footerHours: {ms:"Waktu pejabat: Isnin–Jumaat, 8:00 pagi – 4:30 petang", en:"Office hours: Mon–Fri, 8:00 am – 4:30 pm"},
+  footNote: {ms:"Parents Portal — demonstrasi. Semua nama, markah dan maklumat hubungan adalah contoh sahaja. Tiada maklumat disimpan antara lawatan.", en:"Parents Portal — demonstration. All names, marks and contact details are samples only. Nothing is saved between visits."},
+  resultHint: {ms:"Keputusan contoh peperiksaan pertengahan tahun", en:"Sample mid-year examination results"},
+  guruTitle: {ms:"Ruang Guru", en:"Staff Room"},
+  guruDesc: {ms:"Cikgu boleh log masuk di sini untuk mengedit catatan murid kelas cikgu. Catatan akan dipaparkan kepada ibu bapa murid tersebut.", en:"Teachers can sign in here to edit remarks for pupils in their class. Remarks are shown to that pupil's parents."},
+  guruLoginLabel: {ms:"Log masuk cikgu (demo):", en:"Teacher sign-in (demo):"},
+  guruChoosePupil: {ms:"Pilih murid kelas cikgu:", en:"Choose a pupil in your class:"},
+  guruEditCatatan: {ms:"Catatan guru (dipaparkan kepada ibu bapa):", en:"Teacher's remarks (shown to the pupil's parents):"},
+  guruEditUcapan: {ms:"Ucapan galakan / mesej kepada ibu bapa:", en:"Encouragement note / message to parents:"},
+  guruHintCatatan: {ms:"Contoh: 'Aktif dalam sukan. Perlu perbaiki kerja rumah Matematik.'", en:"e.g. 'Active in sports. Needs to improve Maths homework.'"},
+  guruHintUcapan: {ms:"Contoh: 'Teruskan usaha, Aisyah boleh cemerlang dalam Sains.'", en:"e.g. 'Keep it up — Aisyah can excel in Science.'"},
+  guruSimpan: {ms:"Simpan catatan", en:"Save remarks"},
+  guruSaved: {ms:"✔ Catatan disimpan — ibu bapa akan melihat catatan terkini di tab Keputusan Anak.", en:"✔ Remarks saved — the latest remarks will appear in the My Child's Results tab."},
+  guruNotTeacher: {ms:"Cikgu tidak mengajar murid ini.", en:"This pupil is not in your class."},
+  remarkGuru: {ms:"Catatan guru kelas:", en:"Class teacher's remarks:"},
+  noRemark: {ms:"Belum ada catatan daripada guru kelas.", en:"No remarks from the class teacher yet."}
+};
+
+const announcements = [
+  {
+    day: 24, month: 10,
+    title: {ms:"Mesra Ibu Bapa & Guru (PIBG)", en:"Parent–Teacher Meet (PIBG)"},
+    note: {ms:"Sesi bertemu guru kelas di dewan sekolah.", en:"Meet the class teacher in the school hall."},
+    detail: {
+      ms:"<strong>Tarikh:</strong> Isnin, 24 November 2025, jam 5:00 petang.<br><strong>Tempat:</strong> Dewan Seri Melati.<br>Ibu bapa digalakkan hadir untuk berbincang tentang perkembangan murid. Setiap sesi mengambil masa 10 minit bagi setiap keluarga. Sila daftar di kaunter pintu utama.",
+      en:"<strong>Date:</strong> Monday, 24 November 2025, 5:00 pm.<br><strong>Venue:</strong> Dewan Seri Melati.<br>Parents are encouraged to attend and discuss their child's progress. Each session takes 10 minutes per family. Please register at the main entrance counter."
+    }
+  },
+  {
+    day: 28, month: 10,
+    title: {ms:"Hari Sukan Sekolah", en:"School Sports Day"},
+    note: {ms:"Semua murid wajib memakai pakaian sukan rumah sukan masing-masing.", en:"All pupils must wear their sports-house attire."},
+    detail: {
+      ms:"<strong>Tarikh:</strong> Jumaat, 28 November 2025, jam 7:30 pagi.<br>Murid perlu membawa botol air dan topi. Rumah sukan: Kuning, Hijau, Biru, Merah. Acara berlangsung di padang sekolah, tamat jam 1:00 petang.",
+      en:"<strong>Date:</strong> Friday, 28 November 2025, 7:30 am.<br>Pupils must bring a water bottle and a cap. Sports houses: Yellow, Green, Blue, Red. Events are held at the school field, ending at 1:00 pm."
+    }
+  },
+  {
+    day: 2, month: 11,
+    title: {ms:"Program Jom Bersih 3K", en:"Clean-Up Programme (3K)"},
+    note: {ms:"Aktiviti gotong-royong membersihkan kelas dan kantin.", en:"Gotong-royong to clean classrooms and the canteen."},
+    detail: {
+      ms:"<strong>Tarikh:</strong> Khamis, 4 Disember 2025, jam 8:00 pagi.<br>Murid Tahun 4–6 digalakkan memakai pakaian santai berlengan dan seluar panjang hitam. Alat pembersihan disediakan oleh sekolah.",
+      en:"<strong>Date:</strong> Thursday, 4 December 2025, 8:00 am.<br>Year 4–6 pupils are encouraged to wear a collared T-shirt and black trousers. Cleaning equipment is provided by the school."
+    }
+  }
+];
+
+const programs = [
+  {
+    id: "sukan",
+    name: {ms:"Hari Sukan Sekolah", en:"School Sports Day"},
+    date: {ms:"Jumaat, 28 November 2025", en:"Friday, 28 November 2025"},
+    time: {ms:"7:30 pagi – 1:00 petang", en:"7:30 am – 1:00 pm"},
+    attire: {ms:"Pakaian sukan rumah sukan masing-masing + topi sekolah", en:"Own sports-house attire + school cap"},
+    purpose: {ms:"Menanam semangat kesukanan dan kerjasama berpasukan dalam kalangan murid.", en:"To nurture sportsmanship and teamwork among pupils."},
+    notes: {ms:"Murid membawa botol air 1.5L dan makanan ringan. Murid yang mempunyai masalah kesihatan perlu menyerahkan surat ibu bapa kepada guru.", en:"Pupils bring a 1.5L water bottle and light snacks. Pupils with health conditions must hand a parent's letter to the teacher."},
+    day: 28, month: 10
+  },
+  {
+    id: "kecemerlangan",
+    name: {ms:"Majlis Anugerah Kecemerlangan", en:"Excellence Awards Ceremony"},
+    date: {ms:"Rabu, 10 Disember 2025", en:"Wednesday, 10 December 2025"},
+    time: {ms:"8:30 pagi – 12:30 petang", en:"8:30 am – 12:30 pm"},
+    attire: {ms:"Baju sekolah lengkap berlencana (lencana sekolah & nama)", en:"Full school uniform with badges (school & name badges)"},
+    purpose: {ms:"Menghargai murid yang cemerlang dalam peperiksaan dan kokurikulum sepanjang tahun.", en:"To recognise pupils who excelled in examinations and co-curriculum this year."},
+    notes: {ms:"Ibu bapa penerima anugerah dijemput hadir. Ruang letak kereta tetamu di padang luar Blok C.", en:"Parents of award recipients are invited. Guest parking at the field outside Block C."},
+    day: 10, month: 11
+  },
+  {
+    id: "koperasi",
+    name: {ms:"Hari Perayaan & Karnival Koperasi", en:"Celebration Day & Co-op Carnival"},
+    date: {ms:"Khamis, 18 Disember 2025", en:"Thursday, 18 December 2025"},
+    time: {ms:"8:00 pagi – 2:00 petang", en:"8:00 am – 2:00 pm"},
+    attire: {ms:"Pakaian tradisional atau baju berkol (pakaian santai berlengan)", en:"Traditional or collared attire (polite casual wear)"},
+    purpose: {ms:"Meraikan kepelbagaian budaya dan mempromosikan koperasi sekolah antara murid.", en:"To celebrate cultural diversity and promote the school co-operative."},
+    notes: {ms:"Gerai makanan dijual oleh murid Tahun 5. Wang permulaan RM5–RM10 mencukupi. Hasil kutipan disalurkan kepada Tabung Keceriaan Murid.", en:"Food stalls run by Year 5 pupils. RM5–RM10 pocket money is enough. Proceeds go to the Pupil Happiness Fund."},
+    day: 18, month: 11
+  }
+];
+
+/* Parents + their own child (privacy) */
+const parents = [
+  { id:"p1", name:{ms:"Puan Kamal binti Ahmad", en:"Mdm. Kamal bin Ahmad"}, child:"aisyah" },
+  { id:"p2", name:{ms:"Encik Roslan bin Hassan", en:"Mr. Roslan bin Hassan"}, child:"danish" }
+];
+const children = {
+  aisyah: { name:{ms:"Aisyah binti Kamal", en:"Aisyah binti Kamal"}, cls:{ms:"Tahun 4 Melur", en:"Year 4 Melur"}, classId:"melur" },
+  danish: { name:{ms:"Danish bin Roslan", en:"Danish bin Roslan"}, cls:{ms:"Tahun 4 Melur", en:"Year 4 Melur"}, classId:"melur" },
+  faris:  { name:{ms:"Faris bin Adnan", en:"Faris bin Adnan"}, cls:{ms:"Tahun 4 Melat", en:"Year 4 Melat"}, classId:"melat" }
+};
+const results = {
+  aisyah: {
+    matematik: [{ms:"Ujian 1",en:"Test 1",mark:82},{ms:"Ujian 2",en:"Test 2",mark:78},{ms:"Pentaksiran Bilik Darjah",en:"Class Assessment",mark:88},{ms:"Peperiksaan Pertengahan Tahun",en:"Mid-Year Examination",mark:85}],
+    bm: [{ms:"Ujian 1",en:"Test 1",mark:75},{ms:"Ujian 2",en:"Test 2",mark:80},{ms:"Pentaksiran Bilik Darjah",en:"Class Assessment",mark:72},{ms:"Peperiksaan Pertengahan Tahun",en:"Mid-Year Examination",mark:79}],
+    sains: [{ms:"Ujian 1",en:"Test 1",mark:70},{ms:"Ujian 2",en:"Test 2",mark:74},{ms:"Pentaksiran Bilik Darjah",en:"Class Assessment",mark:81},{ms:"Peperiksaan Pertengahan Tahun",en:"Mid-Year Examination",mark:76}]
+  },
+  danish: {
+    matematik: [{ms:"Ujian 1",en:"Test 1",mark:64},{ms:"Ujian 2",en:"Test 2",mark:68},{ms:"Pentaksiran Bilik Darjah",en:"Class Assessment",mark:71},{ms:"Peperiksaan Pertengahan Tahun",en:"Mid-Year Examination",mark:70}],
+    bm: [{ms:"Ujian 1",en:"Test 1",mark:88},{ms:"Ujian 2",en:"Test 2",mark:91},{ms:"Pentaksiran Bilik Darjah",en:"Class Assessment",mark:85},{ms:"Peperiksaan Pertengahan Tahun",en:"Mid-Year Examination",mark:89}],
+    sains: [{ms:"Ujian 1",en:"Test 1",mark:79},{ms:"Ujian 2",en:"Test 2",mark:82},{ms:"Pentaksiran Bilik Darjah",en:"Class Assessment",mark:77},{ms:"Peperiksaan Pertengahan Tahun",en:"Mid-Year Examination",mark:80}]
+  }
+};
+const subjects = {
+  matematik: {ms:"Matematik", en:"Mathematics"},
+  bm: {ms:"Bahasa Melayu", en:"Bahasa Melayu"},
+  sains: {ms:"Sains", en:"Science"}
+};
+
+/* Teachers (demo) — each teaches a class and can edit the pupils of that class */
+const teachers = [
+  { id:"t1", name:{ms:"Cikgu Faridah binti Omar", en:"Cikgu Faridah binti Omar"}, cls:{ms:"Tahun 4 Melur", en:"Year 4 Melur"}, classId:"melur" },
+  { id:"t2", name:{ms:"Cikgu Hafiz bin Zulkifli", en:"Cikgu Hafiz bin Zulkifli"}, cls:{ms:"Tahun 4 Melat", en:"Year 4 Melat"}, classId:"melat" }
+];
+/* Remarks edited by teachers (in-memory demo) */
+const remarks = {
+  aisyah: { catatan:"Aktif dalam sukan. Perlu perbaiki kerja rumah Matematik.", ucapan:"Teruskan usaha — Aisyah boleh cemerlang dalam Sains." },
+  danish: { catatan:"", ucapan:"" },
+  faris:  { catatan:"", ucapan:"" }
+};
+
+const faqs = [
+  { q:{ms:"Pukul berapa waktu sekolah bermula?", en:"What time does school start?"},
+    a:{ms:"Kelas bermula jam 7:30 pagi dan berakhir jam 1:20 petang (Isnin–Khamis). Pada Jumaat, sesi berakhir jam 12:30 petang. Murid digalakkan tiba sebelum jam 7:20 pagi.", en:"Classes start at 7:30 am and end at 1:20 pm (Monday–Thursday). On Friday, sessions end at 12:30 pm. Pupils are encouraged to arrive before 7:20 am."} },
+  { q:{ms:"Apa pakaian yang perlu dipakai setiap hari?", en:"What should my child wear each day?"},
+    a:{ms:"Isnin & Khamis: baju sekolah biasa. Selasa: pakaian sukan. Rabu: baju batik / Baju Melayu. Jumaat: baju sekolah lengkap berlencana. Sebarang perubahan akan dimaklumkan melalui pengumuman.", en:"Monday & Thursday: regular school uniform. Tuesday: sports attire. Wednesday: batik shirt / Baju Melayu. Friday: full school uniform with badges. Any changes will be announced."} },
+  { q:{ms:"Bagaimana jika anak saya tidak dapat hadir ke sekolah?", en:"What if my child cannot attend school?"},
+    a:{ms:"Ibu bapa perlu memaklumkan guru kelas melalui WhatsApp sebelum jam 8:00 pagi. Kehadiran bawah 90% sepanjang tahun boleh menjejaskan kelayakan peperiksaan akhir.", en:"Parents must inform the class teacher via WhatsApp before 8:00 am. Attendance below 90% for the year can affect final examination eligibility."} },
+  { q:{ms:"Bila keputusan peperiksaan dikeluarkan?", en:"When are examination results released?"},
+    a:{ms:"Slip keputusan pertengahan tahun diedarkan melalui murid pada minggu ke-3 bulan Jun. Slip akhir tahun diedarkan pada minggu terakhir sesi persekolahan. Ibu bapa juga boleh menyemak keputusan melalui tab Keputusan Anak di portal ini.", en:"Mid-year result slips are distributed through pupils in the 3rd week of June. Final-year slips are given out in the last week of the school session. You can also check results under the My Child's Results tab in this portal."} },
+  { q:{ms:"Adakah sekolah menyediakan program transisi Tahun 1?", en:"Does the school run a Year 1 transition programme?"},
+    a:{ms:"Ya. Kelas transisi bermula seminggu lebih awal pada bulan Mac dengan fokus kemahiran asas membaca, menulis dan mengira. Ibu bapa akan menerima surat tawaran secara berasingan.", en:"Yes. Transition classes begin one week earlier in March, focusing on basic reading, writing and counting skills. Parents will receive an offer letter separately."} }
+];
+
+/* ================= STATE ================= */
+let lang = "ms";
+let parentId = null;          // not logged in by default
+let teacherId = null;         // not logged in by default
+let selSubject = "matematik";
+let selPupilId = null;        // pupil chosen in teacher editor
+let selStudentOpen = null;
+let viewYear = 2025, viewMonth = 10;
+let selected = { day: 20, month: 10, year: 2025 };
+
+const t = k => T[k][lang];
+const L = obj => obj[lang];
+const bulanPendek = {
+  ms:["Jan","Feb","Mac","Apr","Mei","Jun","Jul","Ogo","Sep","Okt","Nov","Dis"],
+  en:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+};
+const bulanPenuh = {
+  ms:["Januari","Februari","Mac","April","Mei","Jun","Julai","Ogos","September","Oktober","November","Disember"],
+  en:["January","February","March","April","May","June","July","August","September","October","November","December"]
+};
+
+/* ================= RENDER HELPERS ================= */
+function renderStatic() {
+  document.documentElement.lang = lang;
+  document.title = lang === "ms" ? "Parents Portal — SK Taman Melati" : "Parents Portal — SK Taman Melati";
+  document.getElementById("schoolName").textContent = t("schoolName");
+  document.getElementById("schoolTagline").textContent = t("tagline");
+  document.querySelectorAll("[data-i18n]").forEach(el => el.textContent = t(el.dataset.i18n));
+  document.querySelectorAll(".kal-table th").forEach((th,i)=>{});
+  renderKalHead();
+  renderParentChips();
+  renderAnnouncements();
+  renderCalendar();
+  renderDayInfo();
+  renderPrograms();
+  renderResultsPage();
+  renderGuruPage();
+  renderFaq();
+  renderFooter();
+}
+
+/* ================= LOGIN ================= */
+function renderParentChips() {
+  const wrap = document.getElementById("parentChips");
+  wrap.innerHTML = "";
+  parents.forEach(p => {
+    const btn = document.createElement("button");
+    btn.className = "parent-chip" + (parentId === p.id ? " active" : "");
+    btn.textContent = L(p.name);
+    btn.addEventListener("click", () => {
+      parentId = (parentId === p.id) ? null : p.id;   // klik sekali lagi = log keluar
+      renderParentChips();
+      renderResultsPage();
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+/* ================= ANNOUNCEMENTS ================= */
+function renderAnnouncements() {
+  const list = document.getElementById("annList");
+  const openIdx = [...list.querySelectorAll(".ann-item.open")].map(el =>
+    [...list.children].indexOf(el));
+  list.innerHTML = "";
+  announcements.forEach((a, i) => {
+    const div = document.createElement("div");
+    div.className = "ann-item" + (openIdx.includes(i) || (!openIdx.length && i === 0) ? " open" : "");
+    div.innerHTML = `
+      <button class="ann-toggle" aria-expanded="${div.classList.contains("open")}">
+        <span class="ann-date"><span class="d">${a.day}</span><span class="m">${bulanPendek[lang][a.month]}</span></span>
+        <span class="ann-body">
+          <span class="ann-title">${L(a.title)}</span><br>
+          <span class="ann-note">${L(a.note)}</span>
+        </span>
+        <span class="ann-chevron">▶</span>
+      </button>
+      <div class="ann-detail">${L(a.detail)}</div>`;
+    div.querySelector(".ann-toggle").addEventListener("click", () => {
+      div.classList.toggle("open");
+      div.querySelector(".ann-toggle").setAttribute("aria-expanded", div.classList.contains("open"));
+    });
+    list.appendChild(div);
+  });
+}
+
+/* ================= CALENDAR ================= */
+function eventsOn(d, m) {
+  const evs = programs.filter(p => p.day === d && p.month === m).map(p => ({ type: "program", p }));
+  announcements.filter(a => a.day === d && a.month === m).forEach(a => evs.push({ type: "announcement", a }));
+  return evs;
+}
+function renderKalHead() {
+  const days = lang === "ms" ? ["Ahd","Isn","Sel","Rab","Kha","Jum","Sab"] : ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  document.getElementById("kalHeadRow").innerHTML = days.map(d => `<th>${d}</th>`).join("");
+}
+function renderCalendar() {
+  document.getElementById("kalMonthTitle").textContent = bulanPenuh[lang][viewMonth] + " " + viewYear;
+  const body = document.getElementById("kalBody");
+  body.innerHTML = "";
+  const startCol = new Date(viewYear, viewMonth, 1).getDay();
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+  let row = document.createElement("tr");
+  for (let i = 0; i < startCol; i++) row.appendChild(document.createElement("td"));
+  for (let d = 1; d <= daysInMonth; d++) {
+    const td = document.createElement("td");
+    const btn = document.createElement("button");
+    btn.className = "kal-day";
+    btn.textContent = d;
+    const has = eventsOn(d, viewMonth).length > 0;
+    if (has) btn.classList.add("has-event");
+    if (viewMonth === selected.month && viewYear === selected.year && d === selected.day) btn.classList.add("selected");
+    if (has) {
+      btn.addEventListener("click", () => {
+        selected = { day: d, month: viewMonth, year: viewYear };
+        renderCalendar(); renderDayInfo();
+      });
+    } else { btn.disabled = true; btn.classList.add("dim"); }
+    td.appendChild(btn); row.appendChild(td);
+    if (row.children.length === 7) { body.appendChild(row); row = document.createElement("tr"); }
+  }
+  if (row.children.length) body.appendChild(row);
+}
+function renderDayInfo() {
+  const evs = eventsOn(selected.day, selected.month);
+  const dateStr = `${selected.day} ${bulanPendek[lang][selected.month]} ${selected.year}`;
+  const box = document.getElementById("dayInfo");
+  if (!evs.length) {
+    box.innerHTML = `<h3>${t("noActivity")}</h3><p class="hint">${dateStr} — ${t("normalDay")}</p>`;
+    return;
+  }
+  let html = `<h3>${t("activityOn")} ${dateStr}</h3><p class="hint">${t("detailHint")}</p>`;
+  evs.forEach(ev => {
+    if (ev.type === "program") {
+      const p = ev.p;
+      html += `
+        <div style="margin-bottom:14px">
+          <span class="badge">${L(p.time).split("–")[0].trim()}</span>
+          <div style="font-weight:700">${L(p.name)}</div>
+          <div style="color:var(--ink-soft);font-size:13.5px;margin-top:2px"><strong>${t("attire")}:</strong> ${L(p.attire)}</div>
+          <button class="chip" style="margin-top:8px" data-open-prog="${p.id}">${t("seeFull")}</button>
+        </div>`;
+    } else {
+      html += `
+        <div style="margin-bottom:14px">
+          <span class="badge" style="background:var(--accent-soft);color:var(--accent)">${t("annType")}</span>
+          <div style="font-weight:700">${L(ev.a.title)}</div>
+          <div style="color:var(--ink-soft);font-size:13.5px;margin-top:2px">${L(ev.a.note)}</div>
+        </div>`;
+    }
+  });
+  box.innerHTML = html;
+  box.querySelectorAll("[data-open-prog]").forEach(b =>
+    b.addEventListener("click", () => openProgram(b.dataset.openProg)));
+}
+
+/* ================= PROGRAMMES ================= */
+function renderPrograms() {
+  const list = document.getElementById("progList");
+  const activeId = selStudentOpen;
+  list.innerHTML = "";
+  programs.forEach(p => {
+    const btn = document.createElement("button");
+    btn.className = "prog-item" + (activeId === p.id ? " active" : "");
+    btn.id = "prog-" + p.id;
+    btn.innerHTML = `
+      <span><span class="prog-name">${L(p.name)}</span><br><span class="prog-meta">${L(p.date)} · ${L(p.time)}</span></span>
+      <span class="prog-tag">${bulanPendek[lang][p.month]} ${p.day}</span>`;
+    btn.addEventListener("click", () => openProgram(p.id));
+    list.appendChild(btn);
+  });
+}
+function openProgram(id) {
+  const p = programs.find(x => x.id === id);
+  if (!p) return;
+  selStudentOpen = id;
+  document.querySelectorAll(".prog-item").forEach(el => el.classList.remove("active"));
+  const btn = document.getElementById("prog-" + id);
+  if (btn) btn.classList.add("active");
+  const det = document.getElementById("progDetail");
+  det.classList.add("show");
+  det.innerHTML = `
+    <h4>${L(p.name)}</h4>
+    <dl class="dl">
+      <dt>${t("purpose")}</dt><dd>${L(p.purpose)}</dd>
+      <dt>${t("date")}</dt><dd>${L(p.date)}</dd>
+      <dt>${t("time")}</dt><dd>${L(p.time)}</dd>
+      <dt>${t("attire")}</dt><dd>${L(p.attire)}</dd>
+    </dl>
+    <div class="prog-nota"><strong>${t("importantNote")}:</strong> ${L(p.notes)}</div>`;
+  det.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+/* ================= RESULTS (PRIVATE) ================= */
+function gradeOf(m) {
+  if (m >= 80) return { g:"A", cls:"" };
+  if (m >= 70) return { g:"B", cls:"" };
+  if (m >= 60) return { g:"C", cls:"warn" };
+  return { g:"D", cls:"warn" };
+}
+function renderResultsPage() {
+  const box = document.getElementById("resContent");
+  if (!parentId) {
+    box.innerHTML = `
+      <div class="card lock-card">
+        <div class="icon">🔒</div>
+        <p>${t("notLoggedIn")}</p>
+      </div>`;
+    return;
+  }
+  const parent = parents.find(p => p.id === parentId);
+  const child = children[parent.child];
+  const rows = results[parent.child][selSubject];
+  const avg = Math.round(rows.reduce((s, r) => s + r.mark, 0) / rows.length);
+  const g = gradeOf(avg);
+  const chips = Object.keys(subjects).map(k =>
+    `<button class="chip subj ${selSubject === k ? "active" : ""}" data-subj="${k}">${L(subjects[k])}</button>`).join("");
+  box.innerHTML = `
+    <div class="card child-banner">
+      <span class="child-avatar">${child.name[lang].charAt(0)}</span>
+      <span>
+        <span class="nm">${L(child.name)}</span><br>
+        <span class="cls">${L(child.cls)} · ${t("childOf")} ${L(parent.name)}</span>
+      </span>
+    </div>
+    <div class="result-controls">
+      <span style="align-self:center;color:var(--ink-soft);font-size:14px">${t("subjectsLabel")}</span>
+      ${chips}
+    </div>
+    <div class="card result-panel show">
+      <p class="hint">${t("resultHint")} — <strong>${L(subjects[selSubject])}</strong></p>
+      <table class="mark-table">
+        <thead><tr><th>${lang==="ms"?"Pentaksiran":"Assessment"}</th><th>${lang==="ms"?"Markah":"Mark"}</th><th>${lang==="ms"?"Gred":"Grade"}</th></tr></thead>
+        <tbody>
+          ${rows.map(r => {
+            const gr = gradeOf(r.mark);
+            return `<tr><td>${L(r)}</td><td>${r.mark}%</td><td><span class="grade ${gr.cls}">${gr.g}</span></td></tr>`;
+          }).join("")}
+        </tbody>
+      </table>
+      <div class="summary">${t("avgLabel")} <strong>${avg}% (Gred ${g.g})</strong></div>
+      ${remarkHTML(parent.child)}
+      <p class="privacy-note">🔒 ${t("privacyNoteMs")}</p>
+    </div>`;
+  box.querySelectorAll(".chip.subj").forEach(b =>
+    b.addEventListener("click", () => { selSubject = b.dataset.subj; renderResultsPage(); }));
+}
+
+/* ================= GURU (TEACHERS) ================= */
+function remarkHTML(childId) {
+  const r = remarks[childId];
+  if (!r || (!r.catatan && !r.ucapan)) {
+    return `<div class="prog-nota" style="background:var(--accent-soft);color:var(--accent)"><strong>${t("remarkGuru")}</strong> ${t("noRemark")}</div>`;
+  }
+  let html = `<div class="prog-nota" style="background:var(--accent-soft);color:var(--accent)"><strong>${t("remarkGuru")}</strong><br>${r.catatan || "—"}`;
+  if (r.ucapan) html += `<br><em>"${r.ucapan}"</em>`;
+  html += `</div>`;
+  return html;
+}
+
+function renderGuruPage() {
+  const box = document.getElementById("guruContent");
+  if (!teacherId) {
+    box.innerHTML = `
+      <div class="card lock-card">
+        <div class="icon">🏫</div>
+        <div style="margin-bottom:14px">${t("guruLoginLabel")}</div>
+        <div class="result-controls" style="justify-content:center" id="teacherChips"></div>
+      </div>`;
+    const chips = box.querySelector("#teacherChips");
+    teachers.forEach(tc => {
+      const btn = document.createElement("button");
+      btn.className = "chip";
+      btn.textContent = L(tc.name);
+      btn.dataset.teacher = tc.id;
+      btn.addEventListener("click", () => { teacherId = tc.id; selPupilId = null; renderGuruPage(); });
+      chips.appendChild(btn);
+    });
+    return;
+  }
+  const teacher = teachers.find(x => x.id === teacherId);
+  const classPupils = Object.keys(children).filter(id => children[id].classId === teacher.classId);
+  if (!selPupilId || !classPupils.includes(selPupilId)) selPupilId = classPupils[0];
+  const r = remarks[selPupilId];
+  box.innerHTML = `
+    <div class="card teacher-banner">
+      <span class="child-avatar" style="background:var(--gold)">👨‍🏫</span>
+      <span>
+        <span class="nm">${L(teacher.name)}</span><br>
+        <span class="cls">${lang==="ms"?"Guru kelas":"Class teacher"} — ${L(teacher.cls)}</span>
+      </span>
+    </div>
+    <div class="card" style="padding:20px">
+      <div class="edit-field">
+        <label>${t("guruChoosePupil")}</label>
+        <select class="pupil-select" id="pupilSelect">
+          ${classPupils.map(id => `<option value="${id}" ${id===selPupilId?"selected":""}>${L(children[id].name)} — ${L(children[id].cls)}</option>`).join("")}
+        </select>
+        <div class="hint">${lang==="ms"?"Cikgu hanya boleh edit catatan murid kelas cikgu sendiri.":"Teachers can only edit remarks for pupils in their own class."}</div>
+      </div>
+      <div class="edit-field">
+        <label>${t("guruEditCatatan")}</label>
+        <textarea id="editCatatan" rows="3" placeholder="${t("guruHintCatatan")}">${r.catatan}</textarea>
+      </div>
+      <div class="edit-field">
+        <label>${t("guruEditUcapan")}</label>
+        <textarea id="editUcapan" rows="2" placeholder="${t("guruHintUcapan")}">${r.ucapan}</textarea>
+      </div>
+      <button class="chip active" id="saveRemarks" style="padding:10px 26px">${t("guruSimpan")}</button>
+      <div class="saved-flash" id="savedFlash">${t("guruSaved")}</div>
+    </div>`;
+  box.querySelector("#pupilSelect").addEventListener("change", e => {
+    selPupilId = e.target.value;
+    renderGuruPage();
+  });
+  box.querySelector("#saveRemarks").addEventListener("click", () => {
+    r.catatan = box.querySelector("#editCatatan").value.trim();
+    r.ucapan = box.querySelector("#editUcapan").value.trim();
+    const flash = box.querySelector("#savedFlash");
+    flash.classList.add("show");
+    setTimeout(() => flash.classList.remove("show"), 3500);
+  });
+  const logout = document.createElement("button");
+  logout.className = "chip";
+  logout.style.marginTop = "10px";
+  logout.textContent = lang === "ms" ? "Log keluar" : "Sign out";
+  logout.addEventListener("click", () => { teacherId = null; selPupilId = null; renderGuruPage(); });
+  box.querySelector(".card[style]").appendChild(logout);
+}
+
+/* ================= FAQ ================= */
+function renderFaq() {
+  const list = document.getElementById("faqList");
+  const openIdx = [...list.querySelectorAll(".faq-item.open")].map(el => [...list.children].indexOf(el));
+  list.innerHTML = "";
+  faqs.forEach((f, i) => {
+    const div = document.createElement("div");
+    div.className = "faq-item" + (openIdx.includes(i) || (!openIdx.length && i === 0) ? " open" : "");
+    div.style.borderBottom = i < faqs.length - 1 ? "1px solid var(--line)" : "none";
+    div.innerHTML = `
+      <button class="faq-q" aria-expanded="${div.classList.contains("open")}">
+        <span>${L(f.q)}</span><span class="ann-chevron">▶</span>
+      </button>
+      <div class="faq-a">${L(f.a)}</div>`;
+    div.querySelector(".faq-q").addEventListener("click", () => {
+      div.classList.toggle("open");
+      div.querySelector(".faq-q").setAttribute("aria-expanded", div.classList.contains("open"));
+    });
+    list.appendChild(div);
+  });
+}
+
+/* ================= FOOTER ================= */
+function renderFooter() {
+  document.getElementById("schoolInfo").innerHTML = `
+    <strong>SK Taman Melati</strong><br>
+    ${t("footerAddress")} Jalan Melati 3/2, Taman Melati, 53100 Kuala Lumpur<br>
+    ${t("footerEmail")} sktamanmelati@moe.example.my &nbsp;|&nbsp; ${t("footerPhone")} 03-4102 5566<br>
+    ${t("footerHours")}`;
+  document.getElementById("footNote").textContent = t("footNote");
+}
+
+/* ================= TABS ================= */
+document.getElementById("tabBar").addEventListener("click", e => {
+  const btn = e.target.closest(".tab-btn");
+  if (!btn) return;
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  document.querySelectorAll("section.page").forEach(p => p.classList.remove("show"));
+  document.getElementById("page-" + btn.dataset.tab).classList.add("show");
+});
+
+/* ================= LANGUAGE ================= */
+document.getElementById("langSwitch").addEventListener("click", e => {
+  const btn = e.target.closest("button[data-lang]");
+  if (!btn) return;
+  lang = btn.dataset.lang;
+  document.querySelectorAll("#langSwitch button").forEach(b => b.classList.toggle("active", b === btn));
+  renderStatic();
+});
+
+/* calendar nav */
+document.getElementById("kalPrev").addEventListener("click", () => {
+  viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+  renderCalendar();
+});
+document.getElementById("kalNext").addEventListener("click", () => {
+  viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+  renderCalendar();
+});
+
+renderStatic();
+</script>
+</body>
+</html>
